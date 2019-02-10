@@ -13,6 +13,6 @@ public:
 
 // ^^ Please try ignore this and focus on the interface above ^^
 private:
-	int MyCurrentTry;
-	int MyMaxTries;
+	int MyCurrentTry = 1;
+	int MyMaxTries = 5;
 };
