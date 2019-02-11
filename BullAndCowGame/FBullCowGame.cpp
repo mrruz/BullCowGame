@@ -1,31 +1,29 @@
+#pragma once
 #include "FBullCowGame.h"
 #include <map>
+
+
+//UE4 freindliness
 #define TMap std::map
 
-FBullCowGame::FBullCowGame()
-{
-	Reset();
-}
+FBullCowGame::FBullCowGame(){Reset();} // default constructor
 
 // Getters
-int32 FBullCowGame::GetMaxTries() const{return MyMaxTries;}
 int32 FBullCowGame::GetCurrentTry() const{return MyCurrentTry;}
 int32 FBullCowGame::GetHiddenWordLength() const{ return MyHiddenWord.length();}
 bool FBullCowGame::IsGameWon() const {	return bGameIsWon;}
 
+int32 FBullCowGame::GetMaxTries() const{
+	TMap<int32, int32> WordLengthToMaxTries{ {3,4}, {4,7}, {5,10}, {6,16}, {7,20} };
+	return WordLengthToMaxTries[MyHiddenWord.length()];
+}
 
 void FBullCowGame::Reset()
 {
-	constexpr int32 MAX_TRIES = 5;
-	const FString HIDDEN_WORD = "planet";
+	const FString HIDDEN_WORD = "planet"; //This must be an isogram. //TODO make a list of words that can be auto generated
 	MyCurrentTry = 1;
-
-	MyMaxTries = MAX_TRIES;
-
 	MyHiddenWord = HIDDEN_WORD;
-
 	bGameIsWon = false;
-
 	return;
 }
 
@@ -37,7 +35,7 @@ EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const
 	}
 	else if (!IsLowercase(Guess)) // if the guess isn't all lowercase
 	{
-		return EGuessStatus::Not_Lowercase; //TODO write function
+		return EGuessStatus::Not_Lowercase; 
 	}
 	else if (GetHiddenWordLength() != Guess.length()) // if the guess length is wrong
 	{
@@ -49,7 +47,6 @@ EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const
 	}
 
 }
-
 
 // Receives a valid guess and increments the try returns the count.
 FBullCowCount FBullCowGame::SubmitValidGuess(FString Guess)
