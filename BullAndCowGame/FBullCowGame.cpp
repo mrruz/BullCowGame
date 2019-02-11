@@ -1,4 +1,6 @@
 #include "FBullCowGame.h"
+#include <map>
+#define TMap std::map
 
 FBullCowGame::FBullCowGame()
 {
@@ -29,11 +31,11 @@ void FBullCowGame::Reset()
 
 EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const
 {
-	if (false)// if the guess isn't an isogram, 
+	if (!IsIsogram(Guess))// if the guess isn't an isogram, 
 	{
-		return EGuessStatus::Not_Isogram; //TODO write function
+		return EGuessStatus::Not_Isogram; 
 	}
-	else if (false) // if the guess isn't all lowercase
+	else if (!IsLowercase(Guess)) // if the guess isn't all lowercase
 	{
 		return EGuessStatus::Not_Lowercase; //TODO write function
 	}
@@ -80,4 +82,37 @@ FBullCowCount FBullCowGame::SubmitValidGuess(FString Guess)
 		bGameIsWon = false;
 	}
 	return BullCowCount;
+}
+
+bool FBullCowGame::IsIsogram(FString Guess) const
+{
+	// treat 0 and 1 letters words as isograms
+	if (Guess.length() <= 1){return true;}
+	//define the map
+	TMap <char, bool> LetterSeen;
+	// iterate through each letter from guess
+	for (auto Letter : Guess) {
+		Letter = tolower(Letter);
+		// load the letter into the map
+		// if the value of the map is already true, then break the loop and return false.
+		if (LetterSeen[Letter]) {
+			return false; // not an isogram
+		}
+		else {
+			LetterSeen[Letter] = true; // is isogram
+		}
+	}
+	
+	return true;
+}
+
+bool FBullCowGame::IsLowercase(FString Guess) const
+{
+	// handle null \0 values
+	if (Guess.length() <= 1) { return true; }
+	// iterate through all letters
+	for (auto Letter : Guess) {
+		if (!islower(Letter)) { return false; } // if the letter is lowercase then return true
+	}
+	return true;
 }
