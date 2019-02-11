@@ -40,7 +40,7 @@ public:
 	void Reset(); //TODO make a more rich return value.
 	
 	// counts bulls and cows and incrementing the try number assuming a valid guess.
-	FBullCowCount SubmitGuess(FString);
+	FBullCowCount SubmitValidGuess(FString);
 
 
 // ^^ Please try ignore this and focus on the interface above ^^
@@ -49,4 +49,5 @@ private:
 	int32 MyCurrentTry;
 	int32 MyMaxTries;
 	FString MyHiddenWord;
+	bool bGameIsWon;
 };
